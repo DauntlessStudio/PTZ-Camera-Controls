@@ -105,7 +105,7 @@ export default function PTZControl() {
               onMouseUp={() => api.reqSetZoom("ZoomStop")}
               onMouseLeave={() => api.reqSetZoom("ZoomStop")}
             >
-              <i class="fa-solid fa-plus fa-lg text-black"></i>
+              <i class="fa-solid fa-search-plus fa-lg text-black"></i>
             </button>
             <button
               type="button"
@@ -114,7 +114,7 @@ export default function PTZControl() {
               onMouseUp={() => api.reqSetZoom("ZoomStop")}
               onMouseLeave={() => api.reqSetZoom("ZoomStop")}
             >
-              <i class="fa-solid fa-minus fa-lg text-black"></i>
+              <i class="fa-solid fa-search-minus fa-lg text-black"></i>
             </button>
           </div>
         </div>
@@ -123,16 +123,16 @@ export default function PTZControl() {
       <div class="w-full flex flex-col items-center">
         <div class="text-xl font-semibold mb-2">Presets</div>
         <div class="grid grid-cols-4 gap-4 w-full max-w-xl">
-          {presets.value?.map(preset => (
+          {presets.value?.map((preset, index) => (
             <div key={preset.PresetName} class="flex flex-col items-center gap-1">
-              <span class="text-base font-medium mb-1 text-center truncate w-full max-w-[6.0rem] text-black" title={preset.PresetName}>{preset.PresetName}</span>
+              <span class="text-base font-large mb-1 text-center truncate w-full max-w-[6.0rem] text-black" title={preset.PresetName}>{preset.PresetName}</span>
               <button
                 type="button"
                 class={`rounded-lg w-14 h-14 flex items-center justify-center text-xl font-bold shadow-lg transition-all border-2 text-black
                   ${selectedPreset.value === preset.PresetID ? "border-green-500 bg-green-200 shadow-green-400/60" : "border-red-400 bg-red-100 shadow-red-400/40"}`}
                 onClick={() => selectPreset(preset.PresetID)}
               >
-                {preset.PresetName}
+                {index + 1}
               </button>
             </div>
           ))}

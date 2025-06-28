@@ -8,6 +8,9 @@
   "permissions": [
     "core:default",
     "opener:default",
-    "http:default"
+    {
+      "identifier": "http:default",
+      "allow": ["http://localhost:*/*", "http://192.168.1.123/*"]
+    }
   ]
 }

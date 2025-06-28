@@ -6,18 +6,14 @@ export interface Preset {
 }
 
 export const reqGetPresets = async () => {
-    const request = await fetch("http://192.168.1.123/cmdparse", {
+    const request = await fetch("http://localhost:8000/cmdparse", {
         "headers": {
             "accept": "*/*",
             "accept-language": "en-US,en;q=0.9",
             "content-type": "application/x-www-form-urlencoded;charset=UTF-8"
         },
-        "referrer": "http://192.168.1.123/realPlay.html?randomnumber=98159",
-        "referrerPolicy": "strict-origin-when-cross-origin",
         "body": "ReqUserName=YWRtaW4=&ReqUserPwd=YWRtaW4=&CmdData={\"Cmd\":\"ReqGetPreset\"}",
         "method": "POST",
-        "mode": "cors",
-        "credentials": "include"
     });
 
     const result = await request.json();
@@ -26,17 +22,13 @@ export const reqGetPresets = async () => {
 }
 
 export const reqSetPreset = (preset: Preset) => {
-    fetch("http://192.168.1.123/cmdparse", {
+    return fetch("http://localhost:8000/cmdparse", {
         "headers": {
             "accept": "*/*",
             "accept-language": "en-US,en;q=0.9",
             "content-type": "application/x-www-form-urlencoded;charset=UTF-8"
         },
-        "referrer": "http://192.168.1.123/realPlay.html?randomnumber=98159",
-        "referrerPolicy": "strict-origin-when-cross-origin",
-        "body": `ReqUserName=YWRtaW4=&ReqUserPwd=YWRtaW4=&CmdData={"Cmd":"ReqPresetCtrl","Content":{"PresetCmd":"Call","PresetID":${preset.PresetID},"PresetName":${preset.PresetName}}}`,
+        "body": `ReqUserName=YWRtaW4=&ReqUserPwd=YWRtaW4=&CmdData={"Cmd":"ReqPresetCtrl","Content":{"PresetCmd":"Call","PresetID":"${preset.PresetID}","PresetName":"${preset.PresetName}"}}}`,
         "method": "POST",
-        "mode": "cors",
-        "credentials": "include"
     });
 }
