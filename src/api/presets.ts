@@ -1,4 +1,5 @@
 import { fetch } from '@tauri-apps/plugin-http';
+import { URL } from './consts';
 
 export interface Preset {
     PresetID: number;
@@ -6,7 +7,7 @@ export interface Preset {
 }
 
 export const reqGetPresets = async () => {
-    const request = await fetch("http://localhost:8000/cmdparse", {
+    const request = await fetch(URL, {
         "headers": {
             "accept": "*/*",
             "accept-language": "en-US,en;q=0.9",
@@ -22,7 +23,7 @@ export const reqGetPresets = async () => {
 }
 
 export const reqSetPreset = (preset: Preset) => {
-    return fetch("http://localhost:8000/cmdparse", {
+    return fetch(URL, {
         "headers": {
             "accept": "*/*",
             "accept-language": "en-US,en;q=0.9",
