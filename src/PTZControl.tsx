@@ -8,9 +8,7 @@ export default function PTZControl() {
 
     // Fetch presets on mount
     useEffect(() => {
-        api.reqSetExposureShutter();
-        api.reqSetExposureManual();
-        api.reqSetVerticalFlip();
+        assignSettings();
 
         api.reqGetPresets()
             .then(data => {
@@ -20,6 +18,12 @@ export default function PTZControl() {
                 }
             });
     }, []);
+
+    function assignSettings() {
+        api.reqSetExposureShutter();
+        api.reqSetExposureManual();
+        api.reqSetVerticalFlip();
+    }
 
     function selectPreset(idx: number) {
         if (presets.value && presets.value.length) {
@@ -117,6 +121,16 @@ export default function PTZControl() {
                             <i class="fa-solid fa-search-minus fa-lg text-black"></i>
                         </button>
                     </div>
+                    {/* Settings */}
+                    <div class="flex flex-col gap-4">
+                        <button
+                            type="button"
+                            class="rounded-full w-12 h-12 flex items-center justify-center bg-white shadow hover:bg-green-100 text-2xl text-black"
+                            onClick={() => assignSettings()}
+                        >
+                            <i class="fa-solid fa-eye fa-lg text-black"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
             {/* Presets Section */}
@@ -125,7 +139,7 @@ export default function PTZControl() {
                 <div class="grid grid-cols-4 gap-4 w-full max-w-xl">
                     {presets.value?.map((preset, index) => (
                         <div key={preset.PresetName} class="flex flex-col items-center gap-1">
-                            <span class="text-large font-bold mb-1 text-center truncate w-full max-w-[6.0rem] text-white" title={preset.PresetName}>{preset.PresetName}</span>
+                            <span class="text-large font-bold mb-1 text-center truncate w-full max-w-[8.0rem] text-white" title={preset.PresetName}>{preset.PresetName.replace("_", " ")}</span>
                             <button
                                 type="button"
                                 class={`rounded-lg w-14 h-14 flex items-center justify-center text-xl font-bold shadow-lg transition-all border-2 text-black

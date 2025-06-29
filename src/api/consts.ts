@@ -1,1 +1,1 @@
-export const URL: string = "http://localhost:8000/cmdparse";
+export const URL: string = "http://192.168.1.123/cmdparse";
