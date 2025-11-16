@@ -2,9 +2,14 @@ import { useEffect } from "preact/hooks";
 import { useSignal } from "@preact/signals";
 import * as api from "./api/index.ts";
 
+const shutterSpeeds = [
+    30, 50, 60, 90, 100, 125, 180, 195, 215,
+];
+
 export default function PTZControl() {
     const presets = useSignal<api.Preset[]>();
     const selectedPreset = useSignal<number>(0);
+    const selectedShutter = useSignal<number>(0);
 
     // Fetch presets on mount
     useEffect(() => {
@@ -20,7 +25,7 @@ export default function PTZControl() {
     }, []);
 
     function assignSettings() {
-        api.reqSetExposureShutter();
+        api.reqSetExposureShutter(shutterSpeeds[selectedShutter.value]);
         api.reqSetExposureManual();
         api.reqSetVerticalFlip();
     }
@@ -125,10 +130,29 @@ export default function PTZControl() {
                     <div class="flex flex-col gap-4">
                         <button
                             type="button"
-                            class="rounded-full w-12 h-12 flex items-center justify-center bg-white shadow hover:bg-green-100 text-2xl text-black"
-                            onClick={() => assignSettings()}
+                            class="rounded-full w-12 h-12 flex items-center justify-center bg-white shadow hover:bg-yellow-100 text-2xl text-black"
+                            onClick={() => {
+                                if (selectedShutter.value < shutterSpeeds.length - 1)
+                                {
+                                    selectedShutter.value++;
+                                    api.reqSetExposureShutter(shutterSpeeds[selectedShutter.value]);
+                                }
+                            }}
                         >
-                            <i class="fa-solid fa-eye fa-lg text-black"></i>
+                        <i class="fa-solid fa-sun fa-lg text-black"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="rounded-full w-12 h-12 flex items-center justify-center bg-white shadow hover:bg-yellow-100 text-2xl text-black"
+                            onClick={() => {
+                                if (selectedShutter.value > 0)
+                                {
+                                    selectedShutter.value--;
+                                    api.reqSetExposureShutter(shutterSpeeds[selectedShutter.value]);
+                                }
+                            }}
+                        >
+                            <i class="fa-solid fa-moon fa-lg text-black"></i>
                         </button>
                     </div>
                 </div>
