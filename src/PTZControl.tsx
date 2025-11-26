@@ -2,14 +2,13 @@ import { useEffect } from "preact/hooks";
 import { useSignal } from "@preact/signals";
 import * as api from "./api/index.ts";
 
-const shutterSpeeds = [
-    30, 50, 60, 90, 100, 125, 180, 195, 215,
-];
+const shutterMin = 8;
+const shutterMax = 15;
 
 export default function PTZControl() {
     const presets = useSignal<api.Preset[]>();
     const selectedPreset = useSignal<number>(0);
-    const selectedShutter = useSignal<number>(0);
+    const selectedShutter = useSignal<number>(shutterMin);
 
     // Fetch presets on mount
     useEffect(() => {
@@ -25,7 +24,7 @@ export default function PTZControl() {
     }, []);
 
     function assignSettings() {
-        api.reqSetExposureShutter(shutterSpeeds[selectedShutter.value]);
+        api.reqSetExposureShutter(selectedShutter.value);
         api.reqSetExposureManual();
         api.reqSetVerticalFlip();
     }
@@ -132,10 +131,10 @@ export default function PTZControl() {
                             type="button"
                             class="rounded-full w-12 h-12 flex items-center justify-center bg-white shadow hover:bg-yellow-100 text-2xl text-black"
                             onClick={() => {
-                                if (selectedShutter.value < shutterSpeeds.length - 1)
+                                if (selectedShutter.value > shutterMin)
                                 {
-                                    selectedShutter.value++;
-                                    api.reqSetExposureShutter(shutterSpeeds[selectedShutter.value]);
+                                    selectedShutter.value--;
+                                    api.reqSetExposureShutter(selectedShutter.value);
                                 }
                             }}
                         >
@@ -145,10 +144,10 @@ export default function PTZControl() {
                             type="button"
                             class="rounded-full w-12 h-12 flex items-center justify-center bg-white shadow hover:bg-yellow-100 text-2xl text-black"
                             onClick={() => {
-                                if (selectedShutter.value > 0)
+                                if (selectedShutter.value < shutterMax)
                                 {
-                                    selectedShutter.value--;
-                                    api.reqSetExposureShutter(shutterSpeeds[selectedShutter.value]);
+                                    selectedShutter.value++;
+                                    api.reqSetExposureShutter(selectedShutter.value);
                                 }
                             }}
                         >
